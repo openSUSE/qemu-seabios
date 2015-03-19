@@ -44,6 +44,8 @@ inline int qemu_cfg_dma_enabled(void)
  */
 #define KVM_CPUID_SIGNATURE     0x40000000
 
+static const char *running_on_qemu_str = "Running on QEMU (";
+
 static void kvm_detect(void)
 {
     unsigned int eax, ebx, ecx, edx;
@@ -81,13 +83,13 @@ static void qemu_detect(void)
     PlatformRunningOn |= PF_QEMU;
     switch (d) {
     case 0x1237:
-        dprintf(1, "Running on QEMU (i440fx)\n");
+        dprintf(1, "%si440fx)\n", running_on_qemu_str);
         break;
     case 0x29c0:
-        dprintf(1, "Running on QEMU (q35)\n");
+        dprintf(1, "%sq35)\n", running_on_qemu_str);
         break;
     default:
-        dprintf(1, "Running on QEMU (unknown nb: %04x:%04x)\n", v, d);
+        dprintf(1, "%sunknown nb: %04x:%04x)\n", running_on_qemu_str, v, d);
         break;
     }
     kvm_detect();

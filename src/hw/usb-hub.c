@@ -11,6 +11,8 @@
 #include "usb-hub.h" // struct usb_hub_descriptor
 #include "util.h" // timer_calc
 
+static const char *port_hub_fail_str = "Failure on hub port ";
+
 static int
 get_hub_desc(struct usb_pipe *pipe, struct usb_hub_descriptor *desc)
 {
@@ -82,7 +84,6 @@ get_port_status(struct usbhub_s *hub, int port, struct usb_port_status *sts)
     mutex_unlock(&hub->lock);
     return ret;
 }
-
 // Check if device attached to port
 static int
 usb_hub_detect(struct usbhub_s *hub, u32 port)
@@ -90,7 +91,7 @@ usb_hub_detect(struct usbhub_s *hub, u32 port)
     struct usb_port_status sts;
     int ret = get_port_status(hub, port, &sts);
     if (ret) {
-        dprintf(1, "Failure on hub port %d detect\n", port);
+        dprintf(1, "%s%d detect\n", port_hub_fail_str, port);
         return -1;
     }
     return (sts.wPortStatus & USB_PORT_STAT_CONNECTION) ? 1 : 0;
@@ -102,7 +103,7 @@ usb_hub_disconnect(struct usbhub_s *hub, u32 port)
 {
     int ret = clear_port_feature(hub, port, USB_PORT_FEAT_ENABLE);
     if (ret)
-        dprintf(1, "Failure on hub port %d disconnect\n", port);
+        dprintf(1, "%s%d disconnect\n", port_hub_fail_str, port);
 }
 
 // Reset device on port
@@ -142,7 +143,7 @@ usb_hub_reset(struct usbhub_s *hub, u32 port)
             >> USB_PORT_STAT_SPEED_SHIFT);
 
 fail:
-    dprintf(1, "Failure on hub port %d reset\n", port);
+    dprintf(1, "%s%d reset\n", port_hub_fail_str, port);
     usb_hub_disconnect(hub, port);
     return -1;
 }

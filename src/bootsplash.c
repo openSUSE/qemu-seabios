@@ -16,6 +16,7 @@
 #include "string.h" // memset
 #include "util.h" // enable_bootsplash
 
+static const char *decode_failed_str = "_decode failed with return code ";
 
 /****************************************************************
  * Helper functions
@@ -154,7 +155,7 @@ enable_bootsplash(void)
         dprintf(5, "Decoding bootsplash.jpg\n");
         ret = jpeg_decode(jpeg, filedata);
         if (ret) {
-            dprintf(1, "jpeg_decode failed with return code %d...\n", ret);
+            dprintf(1, "jpeg%s%d...\n", decode_failed_str, ret);
             goto done;
         }
         jpeg_get_size(jpeg, &width, &height);
@@ -168,7 +169,7 @@ enable_bootsplash(void)
         dprintf(5, "Decoding bootsplash.bmp\n");
         ret = bmp_decode(bmp, filedata, filesize);
         if (ret) {
-            dprintf(1, "bmp_decode failed with return code %d...\n", ret);
+            dprintf(1, "bmp%s%d...\n", decode_failed_str, ret);
             goto done;
         }
         bmp_get_size(bmp, &width, &height);
