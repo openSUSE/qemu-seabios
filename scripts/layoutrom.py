@@ -81,8 +81,8 @@ def fitSections(sections, fillsections):
             section.finalsegloc = addr
             fixedsections.append((addr, section))
             if section.align != 1:
-                print("Error: Fixed section %s has non-zero alignment (%d)" % (
-                    section.name, section.align))
+                print(("Error: Fixed section %s has non-zero alignment (%d)" % (
+                    section.name, section.align)))
                 sys.exit(1)
     fixedsections.sort(key=operator.itemgetter(0))
     firstfixed = fixedsections[0][0]
@@ -142,10 +142,10 @@ def fitSections(sections, fillsections):
     # Report stats
     total = BUILD_BIOS_SIZE-firstfixed
     slack = total - totalused
-    print ("Fixed space: 0x%x-0x%x  total: %d  slack: %d"
+    print(("Fixed space: 0x%x-0x%x  total: %d  slack: %d"
            "  Percent slack: %.1f%%" % (
             firstfixed, BUILD_BIOS_SIZE, total, slack,
-            (float(slack) / total) * 100.0))
+            (float(slack) / total) * 100.0)))
 
     return firstfixed + BUILD_BIOS_ADDR
 
@@ -288,12 +288,12 @@ def doLayout(sections, config, genreloc):
     size32flat = sec32fseg_start - sec32flat_start
     size32init = sec32flat_start - sec32init_start
     sizelow = li.sec32low_end - li.sec32low_start
-    print("16bit size:           %d" % size16)
-    print("32bit segmented size: %d" % size32seg)
-    print("32bit flat size:      %d" % (size32flat + size32textfseg))
-    print("32bit flat init size: %d" % size32init)
-    print("Lowmem size:          %d" % sizelow)
-    print("f-segment var size:   %d" % size32fseg)
+    print(("16bit size:           %d" % size16))
+    print(("32bit segmented size: %d" % size32seg))
+    print(("32bit flat size:      %d" % (size32flat + size32textfseg)))
+    print(("32bit flat init size: %d" % size32init))
+    print(("Lowmem size:          %d" % sizelow))
+    print(("f-segment var size:   %d" % size32fseg))
     return li
 
 
@@ -312,7 +312,7 @@ def outXRefs(sections, useseg=0, exportsyms=[], forcedelta=0):
                 and (symbol.section.fileid != section.fileid
                      or symbol.name != reloc.symbolname)):
                 xrefs[reloc.symbolname] = symbol
-    for symbolname, symbol in xrefs.items():
+    for symbolname, symbol in list(xrefs.items()):
         loc = symbol.section.finalloc
         if useseg:
             loc = symbol.section.finalsegloc
@@ -482,8 +482,8 @@ def checkRuntime(reloc, rsection, data, chain):
     if section is None or '.init.' in section.name:
         return 0
     if '.data.varinit.' in section.name:
-        print("ERROR: %s is VARVERIFY32INIT but used from %s" % (
-            section.name, chain))
+        print(("ERROR: %s is VARVERIFY32INIT but used from %s" % (
+            section.name, chain)))
         sys.exit(1)
     return 1
 
@@ -691,7 +691,7 @@ def main():
     li = doLayout(sections, config, genreloc)
 
     # Exported symbols
-    li.varlowsyms = [symbol for symbol in symbols['32flat'].values()
+    li.varlowsyms = [symbol for symbol in list(symbols['32flat'].values())
                      if (symbol.section is not None
                          and symbol.section.finalloc is not None
                          and '.data.varlow.' in symbol.section.name
