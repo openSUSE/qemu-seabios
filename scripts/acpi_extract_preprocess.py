@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python3
 # Copyright (C) 2011 Red Hat, Inc., Michael S. Tsirkin <mst@redhat.com>
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.

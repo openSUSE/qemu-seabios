@@ -29,7 +29,7 @@ re_leal = re.compile(
 def handle_leal(sline):
     m = re_leal.match(sline[5:])
     if m is None or m.group('index') == '%esp':
-        print("Unable to fixup leal instruction: %s" % (sline,))
+        print(("Unable to fixup leal instruction: %s" % (sline,)))
         sys.exit(-1)
     offset, base, index, scale, dest = m.group(
         'offset', 'base', 'index', 'scale', 'dest')
