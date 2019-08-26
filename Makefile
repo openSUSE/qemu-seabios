@@ -13,7 +13,7 @@ export CONFIG_SHELL       := sh
 export KCONFIG_AUTOHEADER := autoconf.h
 export KCONFIG_CONFIG     := $(CURDIR)/.config
 export LC_ALL             := C
-CROSS_PREFIX=
+CROSS_PREFIX=$(CROSS_COMPILE)
 ifneq ($(CROSS_PREFIX),)
 CC=$(CROSS_PREFIX)gcc
 endif
