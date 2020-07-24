@@ -209,8 +209,8 @@ static void storage_ide_init(struct pci_device *pci, void *arg)
 static void piix_ide_init(struct pci_device *pci, void *arg)
 {
     u16 bdf = pci->bdf;
-    pci_config_writew(bdf, 0x40, 0x8000); // enable IDE0
-    pci_config_writew(bdf, 0x42, 0x8000); // enable IDE1
+    pci_config_writew(bdf, 0x40, 0x8011); // enable IDE0 and fast timing
+    pci_config_writew(bdf, 0x42, 0x8011); // enable IDE1 and fast timing
 }
 
 static void pic_ibm_init(struct pci_device *pci, void *arg)
