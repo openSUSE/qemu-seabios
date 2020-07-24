@@ -347,3 +347,12 @@ void qemu_cfg_romfile_setup(void)
         dprintf(3, "Found fw_cfg file: %s (size=%d)\n", file->name, file->size);
     }
 }
+
+u64 qemu_cfg_get_ram_size(void)
+{
+    u64 value;
+    if (!qemu_cfg_present)
+        return 0;
+    qemu_cfg_read_entry(&value, 3, sizeof(value));
+    return value;
+}

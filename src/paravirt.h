@@ -65,5 +65,6 @@ struct e820_reservation {
 u32 qemu_cfg_e820_entries(void);
 void* qemu_cfg_e820_load_next(void *addr);
 void qemu_cfg_romfile_setup(void);
+u64 qemu_cfg_get_ram_size(void);
 
 #endif

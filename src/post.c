@@ -122,10 +122,27 @@ ram_probe(void)
         add_e820(0, rs, E820_RAM);
 
         // Check for memory over 4Gig
-        u64 high = ((inb_cmos(CMOS_MEM_HIGHMEM_LOW) << 16)
+        u64 high;
+        u64 QemuRamSize = qemu_cfg_get_ram_size();
+        if (QemuRamSize) {
+            // enforce that above 4g memory is 64K aligned
+            QemuRamSize &= ~0xffffull;
+            high = 0;
+
+            if (RamSize == 0xe0000000) {
+                if (QemuRamSize > 0xe0000000)
+                    high = QemuRamSize - 0xe0000000;
+            } else if (RamSize == 0xb0000000) {
+                if (QemuRamSize > 0xb0000000)
+                    high = QemuRamSize - 0xb0000000;
+            }
+        } else {
+            high = ((inb_cmos(CMOS_MEM_HIGHMEM_LOW) << 16)
                     | ((u32)inb_cmos(CMOS_MEM_HIGHMEM_MID) << 24)
                     | ((u64)inb_cmos(CMOS_MEM_HIGHMEM_HIGH) << 32));
+        }
         RamSizeOver4G = high;
+
         add_e820(0x100000000ull, high, E820_RAM);
 
         /* reserve 256KB BIOS area at the end of 4 GB */
