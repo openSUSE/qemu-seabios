@@ -59,7 +59,7 @@ endchoice
     config BOOTSPLASH
         depends on BOOTMENU
         bool "Graphical boot splash screen"
-        default y
+        default n
         help
             Support showing a graphical boot splash screen.
     config BOOTORDER
