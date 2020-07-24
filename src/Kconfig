@@ -102,7 +102,7 @@ menu "Hardware support"
     config ATA_DMA
         depends on ATA
         bool "ATA DMA"
-        default n
+        default y
         help
             Detect and try to use ATA bus mastering DMA controllers.
     config ATA_PIO32
