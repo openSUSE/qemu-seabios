@@ -73,6 +73,7 @@ COMMONCFLAGS += $(call cc-option,$(CC),-fstack-check=no,)
 COMMONCFLAGS += $(call cc-option,$(CC),-Wno-address-of-packed-member,)
 COMMONCFLAGS += $(call cc-option,$(CC),-fcf-protection=none,)
 COMMA := ,
+COMMONCFLAGS += $(call cc-option,$(CC),-Wa$(COMMA)-mx86-used-note=no,)
 
 CFLAGS32FLAT := $(COMMONCFLAGS) -DMODE16=0 -DMODESEGMENT=0
 CFLAGSSEG := $(COMMONCFLAGS) -DMODESEGMENT=1 -fno-defer-pop \
